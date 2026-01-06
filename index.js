@@ -8,13 +8,21 @@ app.get("/", (req, res) => {
   res.send("Minimum Energy API is running");
 });
 
-// ---------- GET route (shows minimum energy = 15) ----------
+// ---------- GET route (dynamic using query params) ----------
 app.get("/min-energy", (req, res) => {
-  const cost = [10, 15, 20];
+  const costQuery = req.query.cost; // e.g., /min-energy?cost=10,15,20
+
+  if (!costQuery) {
+    return res.send("Please provide cost array like ?cost=10,15,20");
+  }
+
+  const cost = costQuery.split(",").map(Number);
+  if (cost.length < 2) {
+    return res.send("Array should have at least 2 numbers");
+  }
 
   const n = cost.length;
   const dp = new Array(n);
-
   dp[0] = cost[0];
   dp[1] = cost[1];
 
@@ -23,8 +31,6 @@ app.get("/min-energy", (req, res) => {
   }
 
   const result = Math.min(dp[n - 1], dp[n - 2]);
-
-  // 👇 Plain text output
   res.send(`Minimum energy is ${result}`);
 });
 
@@ -40,7 +46,6 @@ app.post("/min-energy", (req, res) => {
 
   const n = cost.length;
   const dp = new Array(n);
-
   dp[0] = cost[0];
   dp[1] = cost[1];
 
