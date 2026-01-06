@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+fetch("http://localhost:3000/min-energy", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ cost: [10, 15, 20, 5, 10] })
+})
+.then(res => res.json())
+.then(data => alert(JSON.stringify(data)))
+.catch(err => alert(err));
+</script>
+</body>
+</html>
